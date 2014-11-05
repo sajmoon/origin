@@ -333,6 +333,11 @@ func checkStorage(storage string) bool {
 func (c *KubeConfig) executeAPIRequest(method string, clients ClientMappings) bool {
 	storage, path, hasSuffix := storagePathFromArg(c.Arg(1))
 	validStorage := checkStorage(storage)
+
+	if len(storage) == 0 {
+		glog.Fatalf("Missing storage. Use: %s", prettyWireStorage())
+	}
+
 	client, ok := clients[storage]
 	if !ok {
 		glog.Fatalf("Unsupported storage type %s", storage)
